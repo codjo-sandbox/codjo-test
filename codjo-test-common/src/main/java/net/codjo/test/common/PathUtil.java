@@ -7,6 +7,8 @@ package net.codjo.test.common;
 import java.io.File;
 import java.net.URL;
 import junit.framework.AssertionFailedError;
+
+import static net.codjo.test.common.JdkUtil.getJdkSuffix;
 /**
  * Classe de gestion des chemins d'acces aux répertoires target, src et test.
  */
@@ -86,11 +88,17 @@ public final class PathUtil {
 
 
     public static Directory findResourcesFileDirectory(Class baseClass) {
+        return findResourcesFileDirectory(baseClass, false);
+    }
+
+
+    public static Directory findResourcesFileDirectory(Class baseClass, boolean jdkSpecific) {
         Directory classDirectory = findJavaFileDirectory(baseClass);
 
         return new Directory(classDirectory.getAbsolutePath()
-              .replaceAll("\\\\", "/")
-              .replace(TEST_DIRECTORY, TEST_RESOURCES_DIRECTORY));
+                                   .replaceAll("\\\\", "/")
+                                   .replace(TEST_DIRECTORY,
+                                            TEST_RESOURCES_DIRECTORY + (jdkSpecific ? getJdkSuffix() : "")));
     }
 
 
